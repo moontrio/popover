@@ -1,0 +1,6 @@
+module.exports = {
+  extends: '@antfu',
+  rules: {
+    'vue/one-component-per-file': 'off',
+  },
+}
