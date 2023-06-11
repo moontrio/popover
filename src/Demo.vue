@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Popover, PopoverContent, PopoverReference } from './Popover.js'
+import { Popover, PopoverContent, PopoverReference } from './Popover'
 </script>
 
 <template>
   <div class="container">
     <div style="height: 240px; width: 1px;" />
     <div>
-      <Popover>
+      <Popover placement="top" strategy="fixed" :offset="4">
         <span>blah blah</span>
         <PopoverReference style="display: inline-block;">
           <span class="reference">

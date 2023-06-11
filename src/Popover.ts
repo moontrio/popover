@@ -1,5 +1,6 @@
-import type { InjectionKey } from 'vue'
-import { defineComponent, h, inject, provide } from 'vue'
+import type { InjectionKey, PropType } from 'vue'
+import { defineComponent, h, inject, provide, toRefs } from 'vue'
+import type { Placement, Strategy } from '@floating-ui/dom'
 import type { UsePopoverReturn } from './use-popover'
 import { usePopover } from './use-popover'
 
@@ -18,9 +19,23 @@ function usePopoverContext(component: string) {
 
 export const Popover = defineComponent({
   name: 'Popover',
-  props: {},
-  setup(_, { slots }) {
-    const api = usePopover()
+  props: {
+    placement: {
+      type: String as PropType<Placement>,
+      default: 'bottom',
+    },
+    strategy: {
+      type: String as PropType<Strategy>,
+      default: 'absolute',
+    },
+    offset: {
+      type: Number,
+      default: 0,
+    },
+  },
+  setup(props, { slots }) {
+    const { placement, strategy, offset } = toRefs(props)
+    const api = usePopover({ placement, strategy, offset })
 
     provide(PopoverInjectionKey, api)
 

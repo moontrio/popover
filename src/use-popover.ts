@@ -1,5 +1,7 @@
-import { computed, readonly, ref } from 'vue'
-import { autoUpdate } from '@floating-ui/dom'
+import type { Ref } from 'vue'
+import { computed, readonly, ref, unref } from 'vue'
+import type { Middleware, Placement, Strategy } from '@floating-ui/dom'
+import { autoUpdate, flip, offset } from '@floating-ui/dom'
 
 import { useFloating } from '@floating-ui/vue'
 
@@ -8,11 +10,29 @@ enum PopoverState {
   Closed,
 }
 
-export function usePopover() {
+interface UsePopoverProps {
+  placement?: Ref<Placement>
+  strategy?: Ref<Strategy>
+  offset?: Ref<number>
+}
+
+export function usePopover({
+  placement,
+  strategy,
+  offset: offsetRef,
+}: UsePopoverProps) {
   const referenceRef = ref<HTMLElement>()
   const floatingRef = ref<HTMLElement>()
 
   const { floatingStyles } = useFloating(referenceRef, floatingRef, {
+    placement,
+    strategy,
+    middleware: computed<Middleware[]>(() => {
+      return [
+        offset(unref(offsetRef)),
+        flip(),
+      ]
+    }),
     whileElementsMounted: autoUpdate,
   })
 
