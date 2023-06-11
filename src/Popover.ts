@@ -41,7 +41,7 @@ export const Popover = defineComponent({
 
     return () => slots.default?.({
       open: api.open,
-      onClose: api.onClose,
+      doClose: api.doClose,
     })
   },
 })
@@ -57,7 +57,7 @@ export const PopoverReference = defineComponent({
         'span',
         {
           ref: api.referenceRef,
-          onClick: api.toggle,
+          ...api.interactions.reference,
         },
         slots.default?.({
           open: api.open,
@@ -82,10 +82,11 @@ export const PopoverContent = defineComponent({
         {
           ref: api.floatingRef,
           style: api.floatingStyles.value,
+          ...api.interactions.floating,
         },
         slots.default?.({
           open: api.open,
-          onClose: api.onClose,
+          doClose: api.doClose,
         }),
       )
     }

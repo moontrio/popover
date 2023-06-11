@@ -4,6 +4,7 @@ import type { Middleware, Placement, Strategy } from '@floating-ui/dom'
 import { autoUpdate, flip, offset } from '@floating-ui/dom'
 
 import { useFloating } from '@floating-ui/vue'
+import { useHover } from './use-hover'
 
 enum PopoverState {
   Open,
@@ -47,13 +48,15 @@ export function usePopover({
         : PopoverState.Open
   }
 
-  function onOpen() {
+  function doOpen() {
     popoverState.value = PopoverState.Open
   }
 
-  function onClose() {
+  function doClose() {
     popoverState.value = PopoverState.Closed
   }
+
+  const interactions = useHover({ doOpen, doClose })
 
   return {
     referenceRef,
@@ -61,8 +64,9 @@ export function usePopover({
     floatingStyles,
     open,
     toggle,
-    onOpen,
-    onClose,
+    doOpen,
+    doClose,
+    interactions,
   }
 }
 
