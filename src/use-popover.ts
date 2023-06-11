@@ -2,25 +2,30 @@ import type { Ref } from 'vue'
 import { computed, readonly, ref, unref } from 'vue'
 import type { Middleware, Placement, Strategy } from '@floating-ui/dom'
 import { autoUpdate, flip, offset } from '@floating-ui/dom'
-
 import { useFloating } from '@floating-ui/vue'
+
 import { useHover } from './use-hover'
+import { useClick } from './use-click'
 
 enum PopoverState {
   Open,
   Closed,
 }
 
+export type Trigger = 'click' | 'hover'
+
 interface UsePopoverProps {
   placement?: Ref<Placement>
   strategy?: Ref<Strategy>
   offset?: Ref<number>
+  trigger?: Ref<Trigger>
 }
 
 export function usePopover({
   placement,
   strategy,
   offset: offsetRef,
+  trigger,
 }: UsePopoverProps) {
   const referenceRef = ref<HTMLElement>()
   const floatingRef = ref<HTMLElement>()
@@ -56,7 +61,17 @@ export function usePopover({
     popoverState.value = PopoverState.Closed
   }
 
-  const interactions = useHover({ doOpen, doClose })
+  const interactions = computed(() => {
+    if (unref(trigger) === 'hover')
+      return useHover({ doOpen, doClose })
+
+    return useClick({
+      referenceRef,
+      floatingRef,
+      toggle,
+      doClose,
+    })
+  })
 
   return {
     referenceRef,

@@ -6,9 +6,9 @@ import { Popover, PopoverContent, PopoverReference } from './Popover'
   <div class="container">
     <div style="height: 240px; width: 1px;" />
     <div>
-      <Popover placement="top" strategy="fixed" :offset="4">
+      <Popover placement="top" strategy="fixed" :offset="4" trigger="click">
         <span>blah blah</span>
-        <PopoverReference style="display: inline-block;">
+        <PopoverReference style="display: inline-block; cursor: pointer;">
           <span class="reference">
             reference
           </span>
